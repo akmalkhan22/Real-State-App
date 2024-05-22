@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
-  const user = true;
+  const user = false;
   return (
     <nav>
       <div className="left">
@@ -30,8 +30,9 @@ const Navbar = () => {
             </Link>
           </div>
         ):(<>
-        <a href="">Sign in</a>
-        <a href="" className='register'>Sign up</a>
+        
+        <Link to={"/login"}>Sign in</Link>
+        <Link to={"/register"} className='register'>Sign up</Link>
         </>)}
         <div className="menuIcon" onClick={()=>setOpen((prev)=>!prev)}>
           <img src="./menu.png" alt="" />

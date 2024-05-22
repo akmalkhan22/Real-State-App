@@ -17,8 +17,8 @@ export const register = async( req, res) =>{
          avatar
      }
     })
-     
-    return res.status(200).json({newUser, message:"User created successfully"});
+     const {password:userPass, ...userInfo} = newUser
+    return res.status(200).json({userInfo, message:"User created successfully"});
   } catch (error) {
      res.status(501).json({message: error})
   }
@@ -28,7 +28,7 @@ export const register = async( req, res) =>{
 export const login = async(req, res) =>{
    try {
     const {username, password} = req.body
-
+    console.log(username, password)
     const existingUser = await prisma.user.findUnique({where:{username}})
     if (!existingUser) return res.status(401).json({message: "Invalid Credentials"});
     
@@ -41,11 +41,14 @@ export const login = async(req, res) =>{
      },process.env.JWT_SECRET)
     const age = 1000*60*60*24*7
     
+    const{password:userPass, ...userInfo} = existingUser
+
+
     res.cookie('token', token,{
         httpOnly: true,
         // secure:true,
         maxAge:age
-    }).status(200).json({message:"Login successful"})
+    }).status(200).json({userInfo, message:"Login successful"})
    } catch (error) {
      res.status(501).json({message:"Internal error ", error})
    }
